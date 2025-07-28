@@ -1,66 +1,77 @@
-<!DOCTYPE html><html lang="fa">
+<!DOCTYPE html>
+<html lang="fa">
 <head>
   <meta charset="UTF-8">
+  <title>کانفیگ رایگان V2Ray / VLESS / SS / Trojan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>کانفیگ رایگان V2Ray/VLESS/SS/Trojan</title>
   <style>
     body { font-family: sans-serif; background: #f4f4f4; padding: 20px; direction: rtl; text-align: right; }
-    h1 { text-align: center; color: #333; }
-    .filters { margin: 20px 0; text-align: center; }
-    select, button { padding: 10px; margin: 5px; border-radius: 6px; border: 1px solid #ccc; }
-    .config-box { background: white; padding: 10px; margin: 10px auto; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 90%; }
-    .copy-btn { margin-top: 10px; background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; }
+    h1 { text-align: center; color: #2c3e50; }
+    .filters { text-align: center; margin: 20px 0; }
+    select, button { padding: 10px; margin: 5px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
+    .config-box { background: white; padding: 10px; margin: 10px auto; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 95%; direction: ltr; }
+    .copy-btn { margin-top: 10px; background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; float: left; }
+    .flag { font-size: 18px; margin-left: 6px; }
   </style>
 </head>
 <body>
-  <h1>کانفیگ رایگان V2Ray / VLESS / SS / Trojan</h1>  <div class="filters">
+  <h1>🌐 کانفیگ رایگان V2Ray / VLESS / SS / Trojan</h1>
+
+  <div class="filters">
     <select id="countrySelect"></select>
-    <button onclick="loadRandom()">کانفیگ رندوم</button>
-  </div>  <div id="configs"></div>  <script>
+    <button onclick="loadRandom()">🎲 کانفیگ رندوم</button>
+  </div>
+
+  <div id="configs"></div>
+
+  <script>
     const basePath = "configs/";
     const protocols = ["vmess", "vless", "ss", "trojan"];
     const countrySelect = document.getElementById("countrySelect");
     const configsDiv = document.getElementById("configs");
 
     async function fetchCountries() {
-      const res = await fetch(basePath);
-      const text = await res.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/html');
-      const folders = Array.from(doc.querySelectorAll('a'))
-        .map(a => a.textContent.replace('/', '').trim())
-        .filter(name => name.length > 1);
-      countrySelect.innerHTML = folders.map(c => `<option value="${c}">${c}</option>`).join('');
-      loadConfigsFor(folders[0]);
+      const res = await fetch(`${basePath}index.json`);
+      const countries = await res.json();
+      countrySelect.innerHTML = countries.map(c =>
+        `<option value="${c.name}">${c.flag} ${c.name}</option>`
+      ).join('');
+      loadConfigsFor(countries[0].name);
     }
 
     async function loadConfigsFor(country) {
-      configsDiv.innerHTML = "در حال لود...";
+      configsDiv.innerHTML = "در حال دریافت کانفیگ‌ها...";
       let all = [];
+
       for (const proto of protocols) {
         try {
-          const res = await fetch(`${basePath}${country}/$configs.txt`);
+          const res = await fetch(`${basePath}${country}/${proto}.txt`);
           const text = await res.text();
           const lines = text.split("\n").filter(Boolean).map(l => ({ proto, value: l }));
           all.push(...lines);
         } catch (e) {}
       }
-      if (all.length === 0) configsDiv.innerHTML = "کانفیگی پیدا نشد";
-      else displayConfigs(all);
+
+      if (all.length === 0) {
+        configsDiv.innerHTML = "❌ کانفیگی برای این کشور یافت نشد.";
+      } else {
+        showConfigs(all);
+      }
     }
 
-    function displayConfigs(list) {
+    function showConfigs(list) {
       configsDiv.innerHTML = "";
       for (const cfg of list) {
         const box = document.createElement("div");
         box.className = "config-box";
-        box.innerHTML = `<b>${cfg.proto.toUpperCase()}</b><br><code>${cfg.value}</code><br><button class='copy-btn' onclick='copyText("${cfg.value}")'>کپی</button>`;
+        box.innerHTML = `<b>${cfg.proto.toUpperCase()}</b><br><code>${cfg.value}</code><br>
+          <button class='copy-btn' onclick='copy("${cfg.value}")'>کپی</button>`;
         configsDiv.appendChild(box);
       }
     }
 
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(() => alert("کانفیگ کپی شد ✅"));
+    function copy(text) {
+      navigator.clipboard.writeText(text).then(() => alert("✅ کپی شد"));
     }
 
     function loadRandom() {
@@ -70,5 +81,6 @@
 
     countrySelect.addEventListener("change", e => loadConfigsFor(e.target.value));
     fetchCountries();
-  </script></body>
+  </script>
+</body>
 </html>
