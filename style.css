@@ -1,0 +1,40 @@
+body {
+  font-family: sans-serif;
+  background: #f0f0f0;
+  padding: 20px;
+  direction: rtl;
+  text-align: right;
+}
+
+h1 {
+  color: #333;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+select, button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.config-box {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px #ccc;
+}
+
+.copy-btn {
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
