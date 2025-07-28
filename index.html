@@ -64,13 +64,32 @@
       for (const cfg of list) {
         const box = document.createElement("div");
         box.className = "config-box";
-        box.innerHTML = `<b>${cfg.proto.toUpperCase()}</b><br><code>${cfg.value}</code><br>
-          <button class='copy-btn' onclick='copy("${cfg.value}")'>کپی</button>`;
+
+        const code = document.createElement("code");
+        code.innerText = cfg.value;
+
+        const btn = document.createElement("button");
+        btn.className = "copy-btn";
+        btn.innerText = "کپی";
+        btn.onclick = () => copy(cfg.value);
+
+
+        box.innerHTML = `<b>${cfg.proto.toUpperCase()}</b><br>`;
+  
+        box.appendChild(code);
+  
+        box.appendChild(document.createElement("br"));
+  
+        box.appendChild(btn);
+
+  
         configsDiv.appendChild(box);
-      }
-    }
+  }
+}
 
     function copy(text) {
+  
+    
       navigator.clipboard.writeText(text).then(() => alert("✅ کپی شد"));
     }
 
