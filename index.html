@@ -39,7 +39,7 @@
       let all = [];
       for (const proto of protocols) {
         try {
-          const res = await fetch(`${basePath}${country}/${proto}.txt`);
+          const res = await fetch(`${basePath}${country}/$configs.txt`);
           const text = await res.text();
           const lines = text.split("\n").filter(Boolean).map(l => ({ proto, value: l }));
           all.push(...lines);
