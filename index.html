@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>V2rayCrow - کانفیگ رایگان</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🌐 لیست کانفیگ‌های رایگان</h1>
+
+  <div class="filters">
+    <select id="protocol">
+      <option value="vmess">VMESS</option>
+      <option value="vless">VLESS</option>
+      <option value="ss">Shadowsocks</option>
+      <option value="trojan">Trojan</option>
+    </select>
+
+    <select id="country">
+      <option value="all">همه کشورها</option>
+    </select>
+
+    <button id="randomBtn">کانفیگ تصادفی</button>
+  </div>
+
+  <div id="configs"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
